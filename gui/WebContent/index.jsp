@@ -1,4 +1,43 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import = "ho.item.ItemDBBean" %>
+<%@ page import = "ho.item.ItemDataBean" %>
+<%@ page import = "java.util.List" %>
+<%@ page import = "java.text.SimpleDateFormat" %>
+<%@ page import = "java.text.DecimalFormat" %>
+
+<%!
+int pageSize = 5;
+SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+%>
+
+<%
+
+//String pageNum = request.getParameter("pageNum");
+
+//if(pageNum == null)
+//	pageNum = "1";
+
+int pageNum = 1;
+
+int currentPage = pageNum;
+int startRow = (currentPage - 1) * pageSize + 1;
+int endRow = currentPage * pageSize;
+int count = 0;
+int number = 0;
+
+List<ItemDataBean> articleList = null;
+
+ItemDBBean dbPro = ItemDBBean.getInstance();
+count = dbPro.getArticleCount();
+
+if(count>0){
+	articleList = dbPro.getArticles(startRow, pageSize);
+}
+
+number = count-(currentPage-1)*pageSize;
+
+%>
 
 <!DOCTYPE html>
 <html>
@@ -51,96 +90,46 @@
 
 <div class="container">
 <div class="card-group">
+<%
+
+for(int i=0; i<articleList.size(); i++){
+	ItemDataBean article = articleList.get(i);
+	%>
 	<div class="card">
-		<img src="img/product.PNG" width="250" height="150">
+		<img src=<%=articleList.get(i).getImg() %> width="250" height="150">
 		<div class="card-body">
-			<h5 class="card-title">한국제품 vs 일본제품</h5>
-			<p class="card-text">asdfsfdsfs</p>
+			<h5 class="card-title"><%=article.getTitle() %></h5>
+			<p class="card-text"><%=article.getContent() %></p>
+			<%
+				int voteCnt = article.getVoteKor() + article.getVoteJpn();
+				float korRate = 0;
+				float jpnRate = 0;
+				String strKorRate = "0";
+				String strJpnRate = "0";
+				
+				if(voteCnt==0){
+					korRate = 50;
+					jpnRate = 50;
+				}
+				else{
+					korRate = (float)article.getVoteKor() / voteCnt * 100;
+					jpnRate = (float)article.getVoteJpn() / voteCnt * 100;
+					
+					DecimalFormat format = new DecimalFormat(".#");
+					strKorRate = format.format(korRate);
+					strJpnRate = format.format(jpnRate);
+				}	
+				
+			%>
 			<div class="progress">
-				<div class="progress-bar" role="progressbar" style="width:52%">52%</div>
-				<div class="progress-bar bg-danger" role="progressbar" style="width:48%">48%</div>
+				<div class="progress-bar" role="progressbar" style="width:<%=korRate %>%"><%=strKorRate %>%</div>
+				<div class="progress-bar bg-danger" role="progressbar" style="width:<%=jpnRate %>%"><%=strJpnRate %>%</div>
 			</div>
 		</div>
 	</div>
-		<div class="card">
-		<img src="img/product.PNG" width="250" height="150">
-		<div class="card-body">
-			<h5 class="card-title">한국제품 vs 일본제품</h5>
-			<p class="card-text">asdfsfdsfs</p>
-			<div class="progress">
-				<div class="progress-bar" role="progressbar" style="width:52%">52%</div>
-				<div class="progress-bar bg-danger" role="progressbar" style="width:48%">48%</div>
-			</div>
-		</div>
-	</div>
-		<div class="card">
-		<img src="img/product.PNG" width="250" height="150">
-		<div class="card-body">
-			<h5 class="card-title">한국제품 vs 일본제품</h5>
-			<p class="card-text">asdfsfdsfs</p>
-			<div class="progress">
-				<div class="progress-bar" role="progressbar" style="width:52%">52%</div>
-				<div class="progress-bar bg-danger" role="progressbar" style="width:48%">48%</div>
-			</div>
-		</div>
-	</div>
-		<div class="card">
-		<img src="img/product.PNG" width="250" height="150">
-		<div class="card-body">
-			<h5 class="card-title">한국제품 vs 일본제품</h5>
-			<p class="card-text">asdfsfdsfs</p>
-			<div class="progress">
-				<div class="progress-bar" role="progressbar" style="width:52%">52%</div>
-				<div class="progress-bar bg-danger" role="progressbar" style="width:48%">48%</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="card-group">
-	<div class="card">
-		<img src="img/product.PNG" width="250" height="150">
-		<div class="card-body">
-			<h5 class="card-title">한국제품 vs 일본제품</h5>
-			<p class="card-text">asdfsfdsfs</p>
-			<div class="progress">
-				<div class="progress-bar" role="progressbar" style="width:52%">52%</div>
-				<div class="progress-bar bg-danger" role="progressbar" style="width:48%">48%</div>
-			</div>
-		</div>
-	</div>
-		<div class="card">
-		<img src="img/product.PNG" width="250" height="150">
-		<div class="card-body">
-			<h5 class="card-title">한국제품 vs 일본제품</h5>
-			<p class="card-text">asdfsfdsfs</p>
-			<div class="progress">
-				<div class="progress-bar" role="progressbar" style="width:52%">52%</div>
-				<div class="progress-bar bg-danger" role="progressbar" style="width:48%">48%</div>
-			</div>
-		</div>
-	</div>
-		<div class="card">
-		<img src="img/product.PNG" width="250" height="150">
-		<div class="card-body">
-			<h5 class="card-title">한국제품 vs 일본제품</h5>
-			<p class="card-text">asdfsfdsfs</p>
-			<div class="progress">
-				<div class="progress-bar" role="progressbar" style="width:52%">52%</div>
-				<div class="progress-bar bg-danger" role="progressbar" style="width:48%">48%</div>
-			</div>
-		</div>
-	</div>
-		<div class="card">
-		<img src="img/product.PNG" width="250" height="150">
-		<div class="card-body">
-			<h5 class="card-title">한국제품 vs 일본제품</h5>
-			<p class="card-text">asdfsfdsfs</p>
-			<div class="progress">
-				<div class="progress-bar" role="progressbar" style="width:52%">52%</div>
-				<div class="progress-bar bg-danger" role="progressbar" style="width:48%">48%</div>
-			</div>
-		</div>
-	</div>
+<%	
+}
+%>
 </div>
 </div>
 
