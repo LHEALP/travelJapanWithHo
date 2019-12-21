@@ -32,7 +32,7 @@ ItemDBBean dbPro = ItemDBBean.getInstance();
 count = dbPro.getArticleCount();
 
 if(count>0){
-	articleList = dbPro.getArticles(startRow, pageSize);
+	articleList = dbPro.getArticles(startRow, 100);
 }
 
 number = count-(currentPage-1)*pageSize;
@@ -50,8 +50,9 @@ number = count-(currentPage-1)*pageSize;
 
 <header>
 
-<img src="img/logo.PNG" width="100" height="50">
-
+<a href="index.jsp">
+<img src="img/newlogo.PNG" style="width: 300px; height: auto;">
+</a>
 	<div class="container">
 		<form>
 			<div style="width: 50%; margin-left: auto; margin-right: auto;">
@@ -70,7 +71,7 @@ number = count-(currentPage-1)*pageSize;
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="collapse navbar-collapse" id="navbarMenu">
 			<div class="navbar-nav">
-				<a class="nav-item nav-link active" href="#">전체</a>
+				<a class="nav-item nav-link active" onclick="location.href='index.jsp' ">전체</a>
 				<a class="nav-item nav-link active" href="#">생활</a>
 				<a class="nav-item nav-link active" href="#">음식</a>
 				<a class="nav-item nav-link active" href="#">가전</a>
@@ -86,17 +87,22 @@ number = count-(currentPage-1)*pageSize;
 	</nav>
 </div>
 
+<button type="button" class="btn btn-primary float-right" onclick="location.href='addItem.jsp' ">항목 추가</button><br><br>
 <hr/>
 
 <div class="container">
-<div class="card-group">
+<div class="card-columns">
 <%
 
 for(int i=0; i<articleList.size(); i++){
 	ItemDataBean article = articleList.get(i);
+	
 	%>
+	
+	<a href="content.jsp?id=<%=article.getId() %> " style="a:link{color:black; text-decoration: none;}">
+	
 	<div class="card">
-		<img src=<%=articleList.get(i).getImg() %> width="250" height="150">
+		<img src=<%=article.getImg() %> class="card-img-top">
 		<div class="card-body">
 			<h5 class="card-title"><%=article.getTitle() %></h5>
 			<p class="card-text"><%=article.getContent() %></p>
@@ -127,12 +133,13 @@ for(int i=0; i<articleList.size(); i++){
 			</div>
 		</div>
 	</div>
-<%	
+	</a>
+	
+<%
 }
 %>
 </div>
 </div>
-
 
 <hr/>
 
