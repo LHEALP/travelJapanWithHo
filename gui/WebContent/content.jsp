@@ -11,7 +11,8 @@
 
 int id = Integer.parseInt(request.getParameter("id"));
 
-SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+SimpleDateFormat sdfItem = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+SimpleDateFormat sdfComment = new SimpleDateFormat("MM-dd HH:mm");
 
 int count = 0;
 List<CommentDataBean> articleCommentList = null;
@@ -110,7 +111,11 @@ try{
 				<div class="progress-bar" role="progressbar" style="width:<%=korRate %>%"><%=strKorRate %>%</div>
 				<div class="progress-bar bg-danger" role="progressbar" style="width:<%=jpnRate %>%"><%=strJpnRate %>%</div>
 			</div>
-	
+			<div align="right">
+			<%=article.getWriter() %>&nbsp;&nbsp;&nbsp;
+			<%=sdfItem.format(article.getReg_date()) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			조회수  <%=article.getReadCount() %>
+			</div>
 	<br/>
 	
 	<%
@@ -126,7 +131,7 @@ try{
 			CommentDataBean articleComment = articleCommentList.get(i);		
 	%>
 			<tr>
-				<td><b><%=articleComment.getWriter() %></b> (<%=articleComment.getId() %>) &nbsp;&nbsp;&nbsp; <%=sdf.format(articleComment.getReg_date()) %> &nbsp;&nbsp; <%=articleComment.getIp() %><br/><%=articleComment.getContent() %></td>
+				<td><b><%=articleComment.getWriter() %></b> (<%=articleComment.getId() %>) &nbsp;&nbsp;&nbsp; <%=sdfComment.format(articleComment.getReg_date()) %> &nbsp;&nbsp; <%=articleComment.getIp() %><br/><%=articleComment.getContent() %></td>
 			</tr>			
 	<%
 		}
